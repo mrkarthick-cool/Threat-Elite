@@ -1,58 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Threat-Elite | Ultimate Tool</title>
+<title>Threat-Elite Ultimate</title>
 <style>
-:root{--neon:#00ff88;--bg:#080a08}
-body{background:var(--bg);color:var(--neon);font-family:'Courier New',monospace;margin:0;padding:15px}
-h1{border:2px solid var(--neon);padding:15px;text-align:center;box-shadow:0 0 20px var(--neon);text-shadow:0 0 10px var(--neon)}
-.box{border:1px solid var(--neon);padding:15px;margin:15px 0;background:#101510}
-input,textarea{width:90%;padding:12px;background:#000;color:var(--neon);border:1px solid var(--neon);margin:8px 0}
-button{background:var(--neon);color:#000;padding:12px 20px;font-weight:bold;border:none;cursor:pointer;width:100%;margin:5px 0}
-button:hover{box-shadow:0 0 15px var(--neon)}
-#result{white-space:pre-wrap;word-break:break-all}
-img{max-width:100%;border:1px solid var(--neon);margin-top:10px}
+body{background:#050805;color:#00ff88;font-family:monospace;padding:15px}
+h1{border:2px solid #00ff88;text-align:center;box-shadow:0 0 20px #00ff88;padding:15px}
+.box{border:1px solid #00ff88;padding:15px;margin:15px 0}
+input,textarea{width:95%;padding:12px;background:#000;color:#00ff88;border:1px solid #00ff88}
+button{background:#00ff88;color:#000;padding:12px;font-weight:bold;width:100%;cursor:pointer}
+pre{white-space:pre-wrap;word-break:break-all}
 </style>
 </head>
 <body>
-<h1>⚡ THREAT-ELITE ULTIMATE</h1>
+<h1>⚡ THREAT-ELITE - UNLIMITED</h1>
 <div class="box">
-<b>[1] SOC / OSINT CHECK</b><br>
-<input id="ip" placeholder="Enter IP ex: 8.8.8.8">
-<button onclick="checkSOC()">CHECK THREAT</button>
+<input id="ip" placeholder="Enter IP e.g. 8.8.8.8">
+<button onclick="check()">CHECK THREAT</button>
 </div>
-
 <div class="box">
-<b>[2] TEXT-TO-VOICE & IMAGE</b><br>
-<textarea id="txt" placeholder="Enter text for Voice & Image... Ex: Threat Elite SOC Dashboard"></textarea>
-<button onclick="genMedia()">GENERATE VOICE + IMAGE</button>
+<textarea id="txt" placeholder="Text for Voice + Image"></textarea>
+<button onclick="gen()">GENERATE VOICE + IMAGE</button>
 </div>
-
-<div class="box">
-<b>[3] OUTPUT</b>
-<div id="result">Waiting for command...</div>
-<div id="imgbox"></div>
-</div>
-
+<div class="box"><pre id="out">Ready...</pre><div id="img"></div></div>
 <script>
-async function checkSOC(){
-  let ip=document.getElementById('ip').value;
-  if(!ip){alert('IP ivvu bro');return}
-  document.getElementById('result').innerText='Checking '+ip+'...';
-  let res=await fetch(`https://otx.alienvault.com/api/v1/indicators/IPv4/${ip}/general`).then(r=>r.json()).catch(e=>({error:e.message}));
-  document.getElementById('result').innerText=JSON.stringify(res,null,2);
+async function check(){
+ let ip=document.getElementById('ip').value||'8.8.8.8';
+ document.getElementById('out').innerText='Checking via /api/unlimited.js ...';
+ let r=await fetch(`/api/unlimited.js?ip=${ip}`).then(x=>x.json());
+ document.getElementById('out').innerText=JSON.stringify(r,null,2);
 }
-function genMedia(){
-  let t=document.getElementById('txt').value;
-  if(!t){alert('Text ivvu');return}
-  // Voice
-  let u=new SpeechSynthesisUtterance(t);
-  speechSynthesis.speak(u);
-  // Image - Pollinations Free
-  let imgUrl=`https://image.pollinations.ai/prompt/${encodeURIComponent(t + ' cyber security, neon hacker style')}`;
-  document.getElementById('imgbox').innerHTML=`<p>Generated Image:</p><img src="${imgUrl}"><br><a href="${imgUrl}" target="_blank"><button>DOWNLOAD IMAGE</button></a>`;
-  document.getElementById('result').innerText='Voice Playing: '+t;
+function gen(){
+ let t=document.getElementById('txt').value;
+ if(!t)return alert('Text ivvu bro');
+ speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+ let url=`https://image.pollinations.ai/prompt/${encodeURIComponent(t+' hacker neon')}`;
+ document.getElementById('img').innerHTML=`<img src="${url}" style="width:100%;border:1px solid #00ff88;margin-top:10px"><br><a href="${url}" target="_blank"><button>Download Image</button></a>`;
+ document.getElementById('out').innerText='Voice Playing: '+t;
 }
 </script>
 </body>
